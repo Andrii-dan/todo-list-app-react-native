@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { Button, Modal, StyleSheet, TextInput, View, Text } from 'react-native';
-import { faCircleCheck } from '@fortawesome/free-solid-svg-icons';
+import {
+	faCircleCheck,
+	faCircleExclamation,
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { useDispatch, useSelector } from 'react-redux';
 import { v4 as uuid } from 'uuid';
@@ -13,25 +16,37 @@ import {
 
 const AddTask = () => {
 	const [textInputValue, setTextInputValue] = useState('');
+	const [errorMessage, setErrorMessage] = useState(false);
 	const isModalVisible = useSelector(selectIsAddModalVisible);
 	const dispatch = useDispatch();
 
+	const textInputHandler = (text) => {
+		setTextInputValue(text);
+		setErrorMessage(false);
+	};
+
 	const addTaskHandler = () => {
 		const uniqueId = uuid();
-		dispatch(
-			addTask({
-				id: uniqueId,
-				task: textInputValue,
-			})
-		);
-		// clearing input value
-		setTextInputValue('');
-		// closes add-task modal window
-		dispatch(setIsAddModalVisible());
+
+		if (!textInputValue) {
+			setErrorMessage(true);
+		} else {
+			dispatch(
+				addTask({
+					id: uniqueId,
+					task: textInputValue,
+				})
+			);
+			// clearing input value
+			setTextInputValue('');
+			// closes add-task modal window
+			dispatch(setIsAddModalVisible());
+		}
 	};
 
 	const cancelHandler = () => {
 		dispatch(setIsAddModalVisible());
+		setErrorMessage(false);
 	};
 
 	return (
@@ -44,11 +59,23 @@ const AddTask = () => {
 					<Text style={styles.headerText}>ADDING A NEW TASK</Text>
 				</View>
 				<TextInput
-					style={styles.textInput}
+					style={
+						errorMessage
+							? [styles.textInput, styles.errorTextInput]
+							: styles.textInput
+					}
 					placeholder='Type your task here...'
 					value={textInputValue}
-					onChangeText={(text) => setTextInputValue(text)}
+					onChangeText={textInputHandler}
 				/>
+				{errorMessage && (
+					<View style={styles.errorContainer}>
+						<FontAwesomeIcon icon={faCircleExclamation} color='#FF4636' />
+						<Text style={styles.errorMessage}>
+							You cannot add an empty task
+						</Text>
+					</View>
+				)}
 				<View style={styles.btnContainer}>
 					<View style={styles.button}>
 						<Button color='#FF4636' title='CANCEL' onPress={cancelHandler} />
@@ -100,5 +127,17 @@ const styles = StyleSheet.create({
 	headerText: {
 		color: '#C1D0E0',
 		fontSize: 24,
+	},
+	errorContainer: {
+		flexDirection: 'row',
+		paddingTop: 4,
+	},
+	errorMessage: {
+		color: '#FF4636',
+		paddingLeft: 4,
+	},
+	errorTextInput: {
+		borderWidth: 2,
+		borderColor: '#FF4636',
 	},
 });
