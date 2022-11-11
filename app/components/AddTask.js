@@ -1,31 +1,32 @@
 import React, { useState } from 'react';
-import { Button, Modal, StyleSheet, TextInput, View } from 'react-native';
+import { Button, Modal, StyleSheet, TextInput, View, Text } from 'react-native';
+import { faCircleCheck } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { useDispatch, useSelector } from 'react-redux';
 import { v4 as uuid } from 'uuid';
+
 import {
 	addTask,
 	selectIsAddModalVisible,
-	selectTasks,
 	setIsAddModalVisible,
 } from '../slices/tasksSlice';
 
 const AddTask = () => {
 	const [textInputValue, setTextInputValue] = useState('');
-	const tasksList = useSelector(selectTasks);
 	const isModalVisible = useSelector(selectIsAddModalVisible);
 	const dispatch = useDispatch();
-	const uniqueId = uuid();
 
 	const addTaskHandler = () => {
+		const uniqueId = uuid();
 		dispatch(
 			addTask({
 				id: uniqueId,
 				task: textInputValue,
 			})
 		);
-		// clearing input
+		// clearing input value
 		setTextInputValue('');
-		// closes add task modal
+		// closes add-task modal window
 		dispatch(setIsAddModalVisible());
 	};
 
@@ -36,18 +37,24 @@ const AddTask = () => {
 	return (
 		<Modal visible={isModalVisible} animationType='slide'>
 			<View style={styles.inputContainer}>
+				<View style={styles.addTaskIconContainer}>
+					<FontAwesomeIcon icon={faCircleCheck} color={'#1ABA62'} size={130} />
+				</View>
+				<View style={styles.headerContainer}>
+					<Text style={styles.headerText}>ADDING A NEW TASK</Text>
+				</View>
 				<TextInput
 					style={styles.textInput}
-					placeholder='Add task'
+					placeholder='Type your task here...'
 					value={textInputValue}
 					onChangeText={(text) => setTextInputValue(text)}
 				/>
 				<View style={styles.btnContainer}>
 					<View style={styles.button}>
-						<Button color='#f31282' title='Cancel' onPress={cancelHandler} />
+						<Button color='#FF4636' title='CANCEL' onPress={cancelHandler} />
 					</View>
 					<View style={styles.button}>
-						<Button color='#b180f0' title='Add Task' onPress={addTaskHandler} />
+						<Button color='#1ABA62' title='ADD' onPress={addTaskHandler} />
 					</View>
 				</View>
 			</View>
@@ -63,18 +70,17 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center',
 		padding: 16,
-		backgroundColor: '#311b6b',
-		paddingBottom: 250,
+		backgroundColor: '#283747',
+		paddingBottom: 180,
 	},
 	textInput: {
-		borderWidth: 1,
-		borderColor: '#e4d0ff',
-		backgroundColor: '#e4d0ff',
+		backgroundColor: '#CCDCED',
 		color: '#120438',
-		borderRadius: 5,
-		padding: 16,
+		borderRadius: 7,
+		padding: 20,
 		marginBottom: 5,
-		width: '80%',
+		width: '85%',
+		fontSize: 18,
 	},
 	btnContainer: {
 		marginTop: 16,
@@ -83,5 +89,16 @@ const styles = StyleSheet.create({
 	button: {
 		width: 100,
 		marginHorizontal: 8,
+	},
+	addTaskIconContainer: {
+		paddingBottom: 15,
+	},
+	headerContainer: {
+		paddingVertical: 10,
+		marginBottom: 15,
+	},
+	headerText: {
+		color: '#C1D0E0',
+		fontSize: 24,
 	},
 });
