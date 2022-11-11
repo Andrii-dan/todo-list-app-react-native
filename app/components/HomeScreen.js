@@ -1,12 +1,10 @@
 import React from 'react';
 import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faListCheck, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-	selectTasks,
-	setIsAddModalVisible,
-} from '../slices/tasksSlice';
+
+import { selectTasks, setIsAddModalVisible } from '../slices/tasksSlice';
 import SingleTask from './SingleTask';
 
 const HomeScreen = () => {
@@ -23,14 +21,14 @@ const HomeScreen = () => {
 				<View style={styles.messageContainer}>
 					<Text style={styles.message}>
 						There are no tasks yet, add one using the{' '}
-						<FontAwesomeIcon color='#ababab' size={20} icon={faPlus} />
-						button below
+						<FontAwesomeIcon color='#7F8994' size={20} icon={faPlus} /> button
+						below
 					</Text>
 				</View>
 			) : (
 				<View style={styles.listContainer}>
 					<View style={styles.listHeader}>
-						<Text style={styles.listHeaderText}>Tasks</Text>
+						<Text style={styles.listHeaderText}><FontAwesomeIcon color='#C1D0E0' size={19} icon={faListCheck} />TASKS</Text>
 					</View>
 					<FlatList
 						keyExtractor={(item) => item.id}
@@ -49,7 +47,12 @@ const HomeScreen = () => {
 					onPress={openModalHandler}
 				>
 					<View style={styles.button}>
-						<FontAwesomeIcon style={styles.plusIcon} size={45} icon={faPlus} />
+						<FontAwesomeIcon
+							style={styles.plusIcon}
+							size={45}
+							color={'#C1D0E0'}
+							icon={faPlus}
+						/>
 					</View>
 				</Pressable>
 			</View>
@@ -62,19 +65,23 @@ export default HomeScreen;
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		paddingVertical: 30,
-		paddingHorizontal: 15,
+		paddingBottom: 30,
+		paddingHorizontal: 5,
 	},
 	listContainer: {
 		flex: 6,
 	},
 	listHeader: {
 		borderBottomWidth: 1,
-		borderBottomColor: '#ababab',
+		borderBottomColor: '#C1D0E0',
+		paddingBottom: 10,
 		marginBottom: 10,
 	},
 	listHeaderText: {
-		fontSize: 30,
+		fontWeight: '500',
+		color: '#C1D0E0',
+		fontSize: 22,
+		paddingHorizontal: 4,
 	},
 	messageContainer: {
 		flex: 6,
@@ -86,23 +93,29 @@ const styles = StyleSheet.create({
 		textAlign: 'center',
 		fontSize: 24,
 		lineHeight: 30,
-		color: '#ababab',
+		color: '#7F8994',
 	},
 	buttonContainer: {
 		flex: 1,
 		flexDirection: 'row',
 		justifyContent: 'flex-end',
+		paddingHorizontal: 5,
 	},
 	button: {
-		width: 70,
-		height: 70,
+		width: 80,
+		height: 80,
 		justifyContent: 'center',
 		alignItems: 'center',
-		backgroundColor: '#7122f6',
+		backgroundColor: '#444180',
 		borderRadius: '50%',
-	},
-	plusIcon: {
-		color: '#fff',
+		shadowColor: '#000',
+		shadowOffset: {
+			width: 0,
+			height: 4,
+		},
+		shadowOpacity: 0.3,
+		shadowRadius: 4.65,
+		elevation: 8,
 	},
 	pressedItem: {
 		opacity: 0.5,
