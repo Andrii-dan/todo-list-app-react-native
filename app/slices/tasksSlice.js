@@ -31,10 +31,13 @@ export const tasksSlice = createSlice({
 			state.taskToEdit = task;
 		},
 		editTask: (state, action) => {
+			// finds a specific task from the taskList to edit
 			const findTask = state.tasksList.find(
 				(item) => item.id === state.taskToEdit.id
 			);
+			// returns the index of the task to be edited
 			const indexOfEditingTask = state.tasksList.indexOf(findTask);
+			// based on the index of the task to be edited, replaces it with the user-edited task
 			state.tasksList[indexOfEditingTask] = {
 				id: action.payload.id,
 				task: action.payload.task,
