@@ -1,22 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Modal, StyleSheet, TextInput, View } from 'react-native';
+import { Button, Modal, StyleSheet, Text, TextInput, View } from 'react-native';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+import { useDispatch, useSelector } from 'react-redux';
+
 import {
 	editTask,
 	selectIsEditModalVisible,
 	selectTaskToEdit,
 	setIsEditModalVisible,
 } from '../slices/tasksSlice';
-import { useDispatch, useSelector } from 'react-redux';
 
 const EditTask = () => {
 	const textToEdit = useSelector(selectTaskToEdit);
-	const [textInputValue, setTextInputValue] = useState('');
 	const isModalVisible = useSelector(selectIsEditModalVisible);
+	const [textInputValue, setTextInputValue] = useState('');
 	const dispatch = useDispatch();
-
-	useEffect(() => {
-		setTextInputValue(textToEdit.task);
-	}, [textToEdit]);
 
 	const cancelHandler = () => {
 		dispatch(setIsEditModalVisible());
@@ -29,24 +28,35 @@ const EditTask = () => {
 				task: textInputValue,
 			})
 		);
+		// closes edit-task modal window
 		dispatch(setIsEditModalVisible());
 	};
+
+	useEffect(() => {
+		setTextInputValue(textToEdit.task);
+	}, [textToEdit]);
 
 	return (
 		<Modal visible={isModalVisible} animationType='slide'>
 			<View style={styles.inputContainer}>
+				<View style={styles.editTaskIconContainer}>
+					<FontAwesomeIcon icon={faPenToSquare} color={'#1ABA62'} size={130} />
+				</View>
+				<View style={styles.headerContainer}>
+					<Text style={styles.headerText}>EDITING</Text>
+				</View>
 				<TextInput
 					style={styles.textInput}
-					placeholder='Add task'
+					placeholder='Type your task here...'
 					value={textInputValue}
 					onChangeText={(text) => setTextInputValue(text)}
 				/>
 				<View style={styles.btnContainer}>
 					<View style={styles.button}>
-						<Button color='#f31282' title='Cancel' onPress={cancelHandler} />
+						<Button color='#FF4636' title='CANCEL' onPress={cancelHandler} />
 					</View>
 					<View style={styles.button}>
-						<Button color='#b180f0' title='Edit' onPress={editHandler} />
+						<Button color='#1ABA62' title='SAVE' onPress={editHandler} />
 					</View>
 				</View>
 			</View>
@@ -62,18 +72,17 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center',
 		padding: 16,
-		backgroundColor: '#311b6b',
-		paddingBottom: 250,
+		backgroundColor: '#283747',
+		paddingBottom: 180,
 	},
 	textInput: {
-		borderWidth: 1,
-		borderColor: '#e4d0ff',
-		backgroundColor: '#e4d0ff',
+		backgroundColor: '#CCDCED',
 		color: '#120438',
-		borderRadius: 5,
-		padding: 16,
+		borderRadius: 7,
+		padding: 20,
 		marginBottom: 5,
-		width: '80%',
+		width: '85%',
+		fontSize: 18,
 	},
 	btnContainer: {
 		marginTop: 16,
@@ -82,5 +91,16 @@ const styles = StyleSheet.create({
 	button: {
 		width: 100,
 		marginHorizontal: 8,
+	},
+	editTaskIconContainer: {
+		paddingBottom: 15,
+	},
+	headerContainer: {
+		paddingVertical: 10,
+		marginBottom: 15,
+	},
+	headerText: {
+		color: '#C1D0E0',
+		fontSize: 24,
 	},
 });
