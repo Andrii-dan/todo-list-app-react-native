@@ -3,8 +3,9 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faPenToSquare, faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch } from 'react-redux';
+
 import {
-	deleteTask,
+deleteTask,
 	setIsEditModalVisible,
 	setTaskToEdit,
 } from '../slices/tasksSlice';
@@ -38,7 +39,11 @@ const SingleTask = ({ task, id }) => {
 				onPress={editTaskHandler}
 			>
 				<View>
-					<FontAwesomeIcon style={styles.editIcon} icon={faPenToSquare} />
+					<FontAwesomeIcon
+						style={styles.actionIcon}
+						color={'#C1D0E0'}
+						icon={faPenToSquare}
+					/>
 				</View>
 			</Pressable>
 			<Pressable
@@ -46,7 +51,11 @@ const SingleTask = ({ task, id }) => {
 				onPress={deleteTaskHandler}
 			>
 				<View>
-					<FontAwesomeIcon style={styles.deleteIcon} icon={faTrashCan} />
+					<FontAwesomeIcon
+						style={styles.actionIcon}
+						color={'#C1D0E0'}
+						icon={faTrashCan}
+					/>
 				</View>
 			</Pressable>
 		</View>
@@ -60,26 +69,31 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center',
-		padding: 12,
+		paddingHorizontal: 12,
+		paddingVertical: 8,
 		marginVertical: 5,
 		borderRadius: 7,
-		backgroundColor: '#5e0acc',
+		backgroundColor: '#444180',
+		shadowColor: '#000',
+		shadowOffset: {
+			width: 0,
+			height: 4,
+		},
+		shadowOpacity: 0.3,
+		shadowRadius: 4.65,
+		elevation: 8,
 	},
 	pressedItem: {
 		opacity: 0.5,
+		transform: [{ scale: 0.9 }],
 	},
 	taskText: {
 		width: '75%',
 		paddingVertical: 8,
 		fontSize: 18,
-		color: '#fff',
+		color: '#C1D0E0',
 	},
-	deleteIcon: {
+	actionIcon: {
 		paddingHorizontal: 2,
-		color: '#fff',
-	},
-	editIcon: {
-		paddingHorizontal: 2,
-		color: '#fff',
 	},
 });
