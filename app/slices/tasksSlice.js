@@ -23,6 +23,23 @@ export const tasksSlice = createSlice({
 			};
 			state.tasksList.push(newTask);
 		},
+		setTaskToEdit: (state, action) => {
+			const task = {
+				id: action.payload.id,
+				task: action.payload.task,
+			};
+			state.taskToEdit = task;
+		},
+		editTask: (state, action) => {
+			const findTask = state.tasksList.find(
+				(item) => item.id === state.taskToEdit.id
+			);
+			const indexOfEditingTask = state.tasksList.indexOf(findTask);
+			state.tasksList[indexOfEditingTask] = {
+				id: action.payload.id,
+				task: action.payload.task,
+			};
+		},
 		deleteTask: (state, action) => {
 			state.tasksList = state.tasksList.filter(
 				(item) => item.id !== action.payload.id
@@ -34,13 +51,6 @@ export const tasksSlice = createSlice({
 		setIsEditModalVisible: (state) => {
 			state.isEditModalVisible = !state.isEditModalVisible;
 		},
-		setTaskToEdit: (state, action) => {
-			const task = {
-				id: action.payload.id,
-				task: action.payload.task,
-			};
-			state.taskToEdit = task;
-		},
 	},
 });
 
@@ -48,6 +58,7 @@ export const tasksSlice = createSlice({
 export const {
 	addTask,
 	deleteTask,
+	editTask,
 	setIsAddModalVisible,
 	setIsEditModalVisible,
 	setTaskToEdit,

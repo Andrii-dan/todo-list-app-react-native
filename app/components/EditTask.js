@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Modal, StyleSheet, TextInput, View } from 'react-native';
 import {
+	editTask,
 	selectIsEditModalVisible,
 	selectTaskToEdit,
 	setIsEditModalVisible,
@@ -21,6 +22,16 @@ const EditTask = () => {
 		dispatch(setIsEditModalVisible());
 	};
 
+	const editHandler = () => {
+		dispatch(
+			editTask({
+				id: textToEdit.id,
+				task: textInputValue,
+			})
+		);
+		dispatch(setIsEditModalVisible());
+	};
+
 	return (
 		<Modal visible={isModalVisible} animationType='slide'>
 			<View style={styles.inputContainer}>
@@ -35,7 +46,7 @@ const EditTask = () => {
 						<Button color='#f31282' title='Cancel' onPress={cancelHandler} />
 					</View>
 					<View style={styles.button}>
-						<Button color='#b180f0' title='Edit Task' />
+						<Button color='#b180f0' title='Edit' onPress={editHandler} />
 					</View>
 				</View>
 			</View>
