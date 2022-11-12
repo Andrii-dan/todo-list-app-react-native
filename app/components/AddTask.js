@@ -47,6 +47,8 @@ const AddTask = () => {
 	const cancelHandler = () => {
 		dispatch(setIsAddModalVisible());
 		setErrorMessage(false);
+		// clearing input value
+		setTextInputValue('');
 	};
 
 	return (
@@ -98,7 +100,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		padding: 16,
 		backgroundColor: '#283747',
-		paddingBottom: 180,
+		paddingBottom: Platform.OS === 'ios' ? 180 : 100,
 	},
 	textInput: {
 		backgroundColor: '#CCDCED',
