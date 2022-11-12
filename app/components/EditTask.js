@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		padding: 16,
 		backgroundColor: '#283747',
-		paddingBottom: Platform.OS === 'ios' ? 180 : 100,
+		paddingBottom: Platform.OS === 'ios' ? 240 : 100,
 	},
 	textInput: {
 		backgroundColor: '#CCDCED',
