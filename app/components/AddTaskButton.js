@@ -1,12 +1,13 @@
 import React from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { useDispatch } from 'react-redux';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { useDispatch, useSelector } from 'react-redux';
+import { faArrowRight, faPlus } from '@fortawesome/free-solid-svg-icons';
 
-import { setIsAddModalVisible } from '../slices/tasksSlice';
+import { selectTasks, setIsAddModalVisible } from '../slices/tasksSlice';
 
 const AddTaskButton = () => {
+	const tasksList = useSelector(selectTasks);
 	const dispatch = useDispatch();
 
 	const openModalHandler = () => {
@@ -15,6 +16,13 @@ const AddTaskButton = () => {
 
 	return (
 		<View style={styles.buttonContainer}>
+			{tasksList.length > 0 && (
+				<View style={styles.infoContainer}>
+					<Text style={styles.infoText}>Tap here to add a new task</Text>
+					<FontAwesomeIcon color={'#C1D0E0'} icon={faArrowRight} size={14} />
+				</View>
+			)}
+
 			<Pressable
 				style={({ pressed }) => pressed && styles.pressedItem}
 				onPress={openModalHandler}
@@ -39,7 +47,19 @@ const styles = StyleSheet.create({
 		flex: 1,
 		flexDirection: 'row',
 		justifyContent: 'flex-end',
+		alignItems: 'center',
 		paddingHorizontal: 5,
+		paddingVertical: 15,
+	},
+	infoContainer: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		paddingHorizontal: 30,
+	},
+	infoText: {
+		color: '#C1D0E0',
+		fontSize: 16,
+		paddingRight: 10,
 	},
 	button: {
 		width: 80,
@@ -47,7 +67,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center',
 		backgroundColor: '#444180',
-		borderRadius: '50%',
+		borderRadius: 50,
 		shadowColor: '#000',
 		shadowOffset: {
 			width: 0,
