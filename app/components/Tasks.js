@@ -13,10 +13,8 @@ const Tasks = () => {
 	return (
 		<View style={styles.listContainer}>
 			<View style={styles.listHeader}>
-				<Text style={styles.listHeaderText}>
-					<FontAwesomeIcon color='#C1D0E0' size={19} icon={faListCheck} />
-					TASKS
-				</Text>
+				<FontAwesomeIcon color='#C1D0E0' size={19} icon={faListCheck} />
+				<Text style={styles.listHeaderText}>TASKS</Text>
 			</View>
 			<FlatList
 				keyExtractor={(item) => item.id}
@@ -36,6 +34,8 @@ const styles = StyleSheet.create({
 		flex: 6,
 	},
 	listHeader: {
+		flexDirection: 'row',
+		alignItems: 'center',
 		borderBottomWidth: 1,
 		borderBottomColor: '#C1D0E0',
 		paddingBottom: 10,
