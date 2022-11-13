@@ -1,6 +1,7 @@
 const { View, StyleSheet } = require('react-native');
 import { Provider } from 'react-redux';
 import { StatusBar } from 'expo-status-bar';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import store from './app/store';
 
 import HomeScreen from './app/components/HomeScreen';
@@ -9,14 +10,16 @@ import EditTask from './app/components/EditTask';
 
 const App = () => {
 	return (
-		<Provider store={store}>
-			<StatusBar style='light'/>
-			<View style={styles.appContainer}>
-				<HomeScreen />
-				<AddTask />
-				<EditTask />
-			</View>
-		</Provider>
+		<GestureHandlerRootView style={{ flex: 1 }}>
+			<Provider store={store}>
+				<StatusBar style='light' />
+				<View style={styles.appContainer}>
+					<HomeScreen />
+					<AddTask />
+					<EditTask />
+				</View>
+			</Provider>
+		</GestureHandlerRootView>
 	);
 };
 
@@ -27,7 +30,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		paddingTop: 60,
 		paddingBottom: 20,
-		paddingHorizontal: 18,
+		paddingHorizontal: 5,
 		backgroundColor: '#283747',
 	},
 });
