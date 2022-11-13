@@ -3,14 +3,16 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faPenToSquare, faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch } from 'react-redux';
+import { ScaleDecorator } from 'react-native-draggable-flatlist';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import {
-deleteTask,
+	deleteTask,
 	setIsEditModalVisible,
 	setTaskToEdit,
 } from '../slices/tasksSlice';
 
-const SingleTask = ({ task, id }) => {
+const SingleTask = ({ task, id, drag, isActive }) => {
 	const dispatch = useDispatch();
 
 	const editTaskHandler = () => {
@@ -32,33 +34,45 @@ const SingleTask = ({ task, id }) => {
 	};
 
 	return (
-		<View style={styles.taskContainer}>
-			<Text style={styles.taskText}>{task}</Text>
-			<Pressable
-				style={({ pressed }) => pressed && styles.pressedItem}
-				onPress={editTaskHandler}
-			>
-				<View>
-					<FontAwesomeIcon
-						style={styles.actionIcon}
-						color={'#C1D0E0'}
-						icon={faPenToSquare}
-					/>
+		<ScaleDecorator>
+			<View style={styles.taskContainer}>
+				<View style={styles.taskTextContainer}>
+					<TouchableOpacity
+						activeOpacity={1}
+						onLongPress={drag}
+						disabled={isActive}
+					>
+						<Text style={styles.taskText}>{task}</Text>
+					</TouchableOpacity>
 				</View>
-			</Pressable>
-			<Pressable
-				style={({ pressed }) => pressed && styles.pressedItem}
-				onPress={deleteTaskHandler}
-			>
-				<View>
-					<FontAwesomeIcon
-						style={styles.actionIcon}
-						color={'#C1D0E0'}
-						icon={faTrashCan}
-					/>
+				<View style={styles.buttonsConteiner}>
+					<Pressable
+						style={({ pressed }) => pressed && styles.pressedItem}
+						onPress={editTaskHandler}
+					>
+						<View>
+							<FontAwesomeIcon
+								style={styles.actionIcon}
+								color={'#C1D0E0'}
+								icon={faPenToSquare}
+							/>
+						</View>
+					</Pressable>
+					<Pressable
+						style={({ pressed }) => pressed && styles.pressedItem}
+						onPress={deleteTaskHandler}
+					>
+						<View>
+							<FontAwesomeIcon
+								style={styles.actionIcon}
+								color={'#C1D0E0'}
+								icon={faTrashCan}
+							/>
+						</View>
+					</Pressable>
 				</View>
-			</Pressable>
-		</View>
+			</View>
+		</ScaleDecorator>
 	);
 };
 
@@ -83,15 +97,22 @@ const styles = StyleSheet.create({
 		shadowRadius: 4.65,
 		elevation: 8,
 	},
-	pressedItem: {
-		opacity: 0.5,
-		transform: [{ scale: 0.9 }],
+	taskTextContainer: {
+		width: '80%',
 	},
 	taskText: {
-		width: '75%',
 		paddingVertical: 8,
 		fontSize: 18,
 		color: '#C1D0E0',
+	},
+	buttonsConteiner: {
+		width: '20%',
+		flexDirection: 'row',
+		justifyContent: 'space-around',
+	},
+	pressedItem: {
+		opacity: 0.5,
+		transform: [{ scale: 0.9 }],
 	},
 	actionIcon: {
 		paddingHorizontal: 2,
