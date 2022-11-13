@@ -1,14 +1,16 @@
 import React from 'react';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
-import { useSelector } from 'react-redux';
+import { StyleSheet, Text, View } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faListCheck } from '@fortawesome/free-solid-svg-icons';
+import DraggableFlatList from 'react-native-draggable-flatlist';
 
-import { selectTasks } from '../slices/tasksSlice';
+import { selectTasks, setTasksList } from '../slices/tasksSlice';
 import SingleTask from './SingleTask';
 
 const Tasks = () => {
 	const tasksList = useSelector(selectTasks);
+	const dispatch = useDispatch();
 
 	return (
 		<View style={styles.listContainer}>
@@ -16,11 +18,20 @@ const Tasks = () => {
 				<FontAwesomeIcon color='#C1D0E0' size={19} icon={faListCheck} />
 				<Text style={styles.listHeaderText}>TASKS</Text>
 			</View>
-			<FlatList
-				keyExtractor={(item) => item.id}
+			<DraggableFlatList
 				data={tasksList}
-				renderItem={(itemData) => {
-					return <SingleTask task={itemData.item.task} id={itemData.item.id} />;
+				onDragEnd={({ data }) => dispatch(setTasksList(data))}
+				keyExtractor={(item) => item.id}
+				style={styles.draggableList}
+				renderItem={({ item, drag, isActive }) => {
+					return (
+						<SingleTask
+							task={item.task}
+							id={item.id}
+							drag={drag}
+							isActive={isActive}
+						/>
+					);
 				}}
 			/>
 		</View>
@@ -31,6 +42,7 @@ export default Tasks;
 
 const styles = StyleSheet.create({
 	listContainer: {
+		width: '100%',
 		flex: 6,
 	},
 	listHeader: {
@@ -38,6 +50,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		borderBottomWidth: 1,
 		borderBottomColor: '#C1D0E0',
+		marginHorizontal: 21,
 		paddingBottom: 10,
 		marginBottom: 10,
 	},
@@ -46,5 +59,9 @@ const styles = StyleSheet.create({
 		color: '#C1D0E0',
 		fontSize: 22,
 		paddingHorizontal: 4,
+	},
+	draggableList: {
+		height: '95%',
+		paddingHorizontal: 20,
 	},
 });
